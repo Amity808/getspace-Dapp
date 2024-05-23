@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.19;
+pragma solidity 0.8.20;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
@@ -11,6 +11,8 @@ contract GetSpaceMarketplace is AccessControl {
     
 
     uint256 spaceLength;
+
+    address admin;
 
     enum SpaceStatus {
         ACTIVE,
@@ -86,6 +88,7 @@ contract GetSpaceMarketplace is AccessControl {
     
         Space storage space = _space[_index];
         space.duration = _duration;
+        space.paymentLink = _paymentLink;
         space.spaceStatus = SpaceStatus.DEPOSITED;
     }
 
@@ -93,12 +96,13 @@ contract GetSpaceMarketplace is AccessControl {
         require(_space[_index].spaceStatus == SpaceStatus.DEPOSITED,"nobody deposit to this smart contract" );
         Space storage space = _space[_index];
         // duration is part month
-        uint256 newDuration = space.duration
-         uint256 durationrent = block.timestamp + newDuration * 30.44 * 24 * 60 * 60;
+        
+        uint256 newDuration = space.duration;
+         uint256 durationrent = block.timestamp + newDuration * 1 * 24 * 60 * 60;
         //  uint256 toGetPay = block.timestamp + 12 * 30.44 * 24 * 60 * 60;
         if (block.timestamp >= durationrent) {
             space.duration = 0;
-            space.spaceStatus = SpaceStatuse.AVAILABE;
+            space.spaceStatus = SpaceStatus.AVAILABE;
             space.paymentLink = "";
         }
 

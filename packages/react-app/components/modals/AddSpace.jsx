@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useWriteContract, useSimulateContract, useAccount, useReadContract } from "wagmi"
+import GETSPACE from "../../contract/GetSpace.json"
 const AddSpace = () => {
 
   const [toggle, setToggle] = useState(false);
@@ -8,6 +9,16 @@ const AddSpace = () => {
   const [description, setDescription] = useState('')
   const [videoImage, setVideoImage] = useState('')
   const [duration, setDuration] = useState('')
+
+
+  const { data: simulateCreateSpace} = useSimulateContract({
+    abi: GETSPACE.abi,
+    address: GETSPACE.address,
+    functionName: "registerSpace",
+    args: []
+  })
+
+  const { writeContractAsync } = useWriteContract();
 
   const addSpace = async () => {
 
