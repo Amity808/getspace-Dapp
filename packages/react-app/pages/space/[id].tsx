@@ -11,9 +11,12 @@ import {
 } from "wagmi";
 import useLoading from "@/hooks/useLoading";
 import { truuncateAddress } from "@/helpers/trucateAddress"
-// Define the shape of the props for the HouseCard component
-interface HouseCardProps {
-  id: Number
+
+import { useParams } from 'next/navigation'
+import GeneratepaymentLink from "@/components/GeneratepaymentLink";
+// Define the shape of the props for the SpaceDetail component
+interface SpaceDetailProps {
+  params: Number
 }
 
 interface SpaceData {
@@ -41,8 +44,10 @@ interface SpaceType {
 
 
 
-const HouseCard: React.FC<HouseCardProps> = ({ id }) => {
-
+const SpaceDetail: React.FC<SpaceDetailProps> = ({ params }: SpaceDetailProps) => {
+    const paramss = useParams<{ tag: string; item: string }>()
+    console.log(paramss)
+    const id = params
   const { writeContractAsync } = useWriteContract()
   const { isLoading, startLoading, stopLoading } = useLoading()
 
@@ -59,7 +64,7 @@ const HouseCard: React.FC<HouseCardProps> = ({ id }) => {
     abi: GETSPACE.abi,
     address: GETSPACE.address as `0x${string}`,
     functionName: "_space",
-    args: [id]
+    args: [paramss?.id]
   })
 
 
@@ -86,9 +91,9 @@ const HouseCard: React.FC<HouseCardProps> = ({ id }) => {
 
   if (!spaceData) return null;
 
-  console.log(spaceData.videoImage)
   return (
-    <div className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900 m-3">
+    <div>
+        <div className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900 m-3">
       {/* <Image
         // src={portImg}
         alt="jordans"
@@ -107,12 +112,16 @@ const HouseCard: React.FC<HouseCardProps> = ({ id }) => {
           </p>
           <button className="rounded-full pl-4 pr-1 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
             <Link target="_blank" href={'/'}>{truuncateAddress(spaceData.Owner)}</Link>
-            <Link target="_blank" href={`/space/${id}`} className="bg-zinc-700 rounded-full text-[0.6rem] px-2 py-0 text-white">
-              Check out
-            </Link>
           </button>
         </div>
+        <div>
+            <h3>Generate Payment</h3>
+            <div>
+                <GeneratepaymentLink />
+            </div>
+        </div>
+    </div>
         );
 }
 
-        export default HouseCard;
+        export default SpaceDetail;

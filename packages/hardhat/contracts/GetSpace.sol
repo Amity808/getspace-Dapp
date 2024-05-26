@@ -10,7 +10,7 @@ contract GetSpaceMarketplace is AccessControl {
     bytes32 public constant SPACE_OWNER_ROLE = keccak256("SPACE_OWNER"); 
     
 
-    uint256 spaceLength;
+    uint256 public spaceLength;
 
     address admin;
 
@@ -50,7 +50,7 @@ contract GetSpaceMarketplace is AccessControl {
 
     mapping (uint256 => Space) public _space;
 
-    function registerSpace(string memory _name, string memory _spaceAddress, string memory _paymentLink, string memory _description, uint256 _duration, string memory _videoImage) public onlyAdmin() {
+    function registerSpace(string memory _name, string memory _spaceAddress, string memory _description, uint256 _duration, string memory _videoImage) public onlyAdmin() {
         Space storage space = _space[spaceLength];
 
         space.name = _name;

@@ -2,8 +2,10 @@ import {
     RainbowKitProvider,
     connectorsForWallets,
 } from "@rainbow-me/rainbowkit";
+import "react-toastify/dist/ReactToastify.css";
 import { injectedWallet } from "@rainbow-me/rainbowkit/wallets";
 import "@rainbow-me/rainbowkit/styles.css";
+import { ToastContainer } from 'react-toastify';
 import type { AppProps } from "next/app";
 import { http, WagmiProvider, createConfig } from "wagmi";
 import Layout from "../components/Layout";
@@ -29,8 +31,8 @@ const config = createConfig({
     connectors,
     chains: [celo, celoAlfajores],
     transports: {
-        [celo.id]: http(),
         [celoAlfajores.id]: http(),
+        [celo.id]: http(),
     },
 });
 
@@ -41,6 +43,18 @@ function App({ Component, pageProps }: AppProps) {
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
                 <RainbowKitProvider>
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>
